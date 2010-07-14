@@ -6,3 +6,6 @@ Foo
     Another subtree
       Third level subtree
   Breaks?
+
+Another toplevel item
+  Top level subtree

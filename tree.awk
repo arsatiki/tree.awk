@@ -1,21 +1,21 @@
-function indentlevel() {
-	return index($0, $1);
-}
+function indentlevel() { return index($0, $1); }
 
-function node() {
-	return "NODE_" NR;
-}
+function node() { return "NODE_" NR; }
 
-function emit(s) {
-	print "\t" s ";";
-}
+function emit(s) { print "\t" s ";"; }
 
-function sp_direction(oldlevel, newlevel) {
-	if (oldlevel < newlevel)
+function set_sp(levels, sp, newlevel) {
+	if (sp == 0)
 		return 1;
-	if (oldlevel > newlevel)
-		return -1;
-	return 0;
+
+	oldlevel = levels[sp];
+	if (oldlevel < newlevel)
+		return sp + 1;
+		
+	if (oldlevel == newlevel)
+		return sp;
+
+	return set_sp(levels, sp-1, newlevel);
 }
 
 BEGIN {
@@ -26,7 +26,7 @@ BEGIN {
 
 {
 	level = indentlevel();
-	sp += sp_direction(levels[sp], level);
+	sp = set_sp(levels, sp, level);
 	levels[sp] = level;
 	nodes[sp] = node();
 
