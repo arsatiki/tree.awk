@@ -24,7 +24,9 @@ BEGIN {
 	print "digraph {"
 }
 
-NF > 0 {
+NF == 0 { next; }
+
+{
 	level = indentlevel();
 	sp = set_sp(levels, sp, level);
 	levels[sp] = level;
