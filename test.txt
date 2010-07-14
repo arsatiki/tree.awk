@@ -10,3 +10,6 @@ Foo
 Another toplevel item
         Top level subtree
 	Tabs should be 8 spaces
+        	Sub of tab
+                Another sub of tab
+		Third sub of tab
