@@ -13,6 +13,4 @@ awk -f tree.awk
 TODO
 ====
 
-- Replace tabs with spaces
-- Empty lines are interpreted as nodes.
 - Comments
