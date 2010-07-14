@@ -8,9 +8,11 @@ function emit(s) { print "\t" s ";"; }
 BEGIN { print "digraph {"; }
 
 NF == 0 { next; }
-{ gsub(/\t/, "        "); }
 
 {
+	// Convert tabs to spaces
+	gsub(/\t/, "        ");
+	
 	level = index($0, $1);
 	
 	while (!empty(levels) && peek(levels) >= level) {
