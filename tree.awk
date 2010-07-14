@@ -1,45 +1,37 @@
+function push(s, v) { s[++s["top"]] = v; }
+function peek(s) { return s[s["top"]]; }
+function empty(s) { return !s["top"]; }
+function pop(s) { return s[s["top"]--]; }
+
 function indentlevel() { return index($0, $1); }
-
 function node() { return "NODE_" NR; }
-
 function emit(s) { print "\t" s ";"; }
 
-function set_sp(levels, sp, newlevel) {
-	if (sp == 0)
-		return 1;
-
-	oldlevel = levels[sp];
-	if (oldlevel < newlevel)
-		return sp + 1;
-		
-	if (oldlevel == newlevel)
-		return sp;
-
-	return set_sp(levels, sp-1, newlevel);
-}
-
-BEGIN {
-	sp = 0;
-
-	print "digraph {"
-}
+BEGIN { print "digraph {"; }
 
 NF == 0 { next; }
-
-{gsub(/\t/, "        ");}
+{ gsub(/\t/, "        "); }
 
 {
 	level = indentlevel();
-	sp = set_sp(levels, sp, level);
-	levels[sp] = level;
-	nodes[sp] = node();
-
-	labelstr = substr($0, levels[sp]);
-	emit(nodes[sp] "[label=\"" labelstr "\"]");
+	
+	while (!empty(levels) && peek(levels) >= level) {
+		pop(nodes);
+		pop(levels);
+	} 
+	
+	push(levels, level);
+	push(nodes, node());
+	
+	labelstr = substr($0, peek(levels));
+	emit(peek(nodes) "[label=\"" labelstr "\"]");
 }
 
-sp > 1 {
-	emit(nodes[sp-1] " -> " nodes[sp]);
+!empty(nodes) {
+	child = pop(nodes);
+	if (!empty(nodes))
+		emit(peek(nodes) " -> " child);
+	push(nodes, child);
 }
 
 END { print "}" }
