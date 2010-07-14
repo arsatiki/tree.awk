@@ -3,8 +3,6 @@ function peek(s) { return s[s["top"]]; }
 function empty(s) { return !s["top"]; }
 function pop(s) { return s[s["top"]--]; }
 
-function indentlevel() { return index($0, $1); }
-function node() { return "NODE_" NR; }
 function emit(s) { print "\t" s ";"; }
 
 BEGIN { print "digraph {"; }
@@ -13,7 +11,7 @@ NF == 0 { next; }
 { gsub(/\t/, "        "); }
 
 {
-	level = indentlevel();
+	level = index($0, $1);
 	
 	while (!empty(levels) && peek(levels) >= level) {
 		pop(nodes);
@@ -21,7 +19,7 @@ NF == 0 { next; }
 	} 
 	
 	push(levels, level);
-	push(nodes, node());
+	push(nodes, "NODE_" NR);
 	
 	labelstr = substr($0, peek(levels));
 	emit(peek(nodes) "[label=\"" labelstr "\"]");
