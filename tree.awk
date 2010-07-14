@@ -26,6 +26,8 @@ BEGIN {
 
 NF == 0 { next; }
 
+{gsub(/\t/, "        ");}
+
 {
 	level = indentlevel();
 	sp = set_sp(levels, sp, level);
