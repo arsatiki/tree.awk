@@ -1,0 +1,17 @@
+tree.awk
+========
+
+This is a quick script which takes a hierarchically indented text file
+and generates a Graphviz .dot file.
+
+USAGE
+=====
+
+awk -f tree.awk
+
+
+TODO
+====
+
+- Replace tabs with spaces
+- Empty lines are interpreted as nodes.
